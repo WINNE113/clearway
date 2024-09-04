@@ -1,17 +1,19 @@
 import { useState } from 'react'
-import path from "./ultils/path"
-import { Route, Routers } from 'react-router-dom'
+import path from './ultils/path'
+import { Route, Routes } from 'react-router-dom'
+import Layout from './pages/public/Layout'
+import Home from './pages/public/Home'
 
 function App() {
 
   return (
-    <>
-      <Routers>
+    <Routes>
+      <Route>
         <Route path={path.LAYOUT} element={<Layout />}>
           <Route path={path.HOME} element={<Home />} />
         </Route>
-      </Routers>
-    </>
+      </Route>
+    </Routes>
   )
 }
 

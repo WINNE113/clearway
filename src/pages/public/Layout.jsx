@@ -1,8 +1,7 @@
 import React from "react"
-import { Footer, Navigation } from "@/components"
+import { Footer, Navigation } from "../../components"
 import { Outlet } from "react-router-dom"
-import withBaseTopping from "@/hocs/WithBaseTopping"
-
+import WithBaseTopping from "../../hocs/withBaseTopping"
 const Layout = ({ location }) => {
   return (
     <div className="relative max-h-screen overflow-y-auto">
@@ -15,4 +14,4 @@ const Layout = ({ location }) => {
   )
 }
 
-export default withBaseTopping(Layout)
+export default WithBaseTopping(Layout)

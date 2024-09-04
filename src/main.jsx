@@ -1,10 +1,19 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
+import ReactDOM from 'react-dom/client';
+import App from './App';
 import './index.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react'
+import { store, persistor } from './redux';
+import { BrowserRouter } from 'react-router-dom'
 
-createRoot(document.getElementById('root')).render(
-  <h1 className="text-3xl font-bold underline text-orange-600">
-    Hello world!
-  </h1>
-)
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
+);
