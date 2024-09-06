@@ -26,7 +26,7 @@ const Navigation = ({ dispatch, location, navigate }) => {
             <div className="w-main flex flex-col gap-4">
                 <div className="flex justify-between items-center">
                     <Link className="text-3xl text-white font-bold" to={"/"}>
-                        clearway
+                        Clearway
                     </Link>
                     <div className="flex items-center gap-4">
                         <div className="flex gap-2 justify-center items-center">

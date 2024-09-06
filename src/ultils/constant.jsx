@@ -1,5 +1,32 @@
 import path from "./path"
 
+import {
+    MdOutlineAttachMoney,
+    MdHistory,
+    MdReportGmailerrorred,
+} from "react-icons/md"
+import {
+    RiFileEditLine,
+    RiShareForwardFill,
+    RiPriceTag2Line,
+} from "react-icons/ri"
+import {
+    BsFilePerson,
+    BsPostcard,
+    BsFillPieChartFill,
+    BsFillHouseGearFill,
+    BsDropletHalf,
+    BsCashCoin,
+    BsStack,
+} from "react-icons/bs"
+import {
+    AiFillDashboard,
+    AiFillDollarCircle,
+    AiFillMoneyCollect,
+    AiOutlineDashboard,
+    AiOutlineHeart,
+    AiOutlineUser,
+} from "react-icons/ai"
 export const menu = [
     {
         path: "#",
@@ -29,4 +56,64 @@ export const menu = [
         type: path.NAV4,
         subname: "Navigation 4",
     },
+]
+
+export const adminSidebar = [
+    {
+        id: 5,
+        name: "Thống kê",
+        path: `/${path.ADMIN}/${path.DASHBOARD}`,
+        icon: <AiOutlineDashboard size={20} />,
+        type: "SINGLE",
+    },
+    {
+        id: 4,
+        name: "Quản lý thành viên",
+        path: `/${path.ADMIN}/${path.MANAGE_USER}`,
+        icon: <AiOutlineUser size={20} />,
+        type: "SINGLE",
+    },
+    {
+        id: 355665,
+        name: "Quản lý tuyến đường",
+        icon: <BsPostcard size={20} />,
+        type: "SINGLE",
+        path: `/${path.ADMIN}/${path.MANAGE_ROUTES}`,
+    },
+    {
+        id: 355465,
+        name: "Quản lý số liệu thống kê",
+        icon: <BsPostcard size={20} />,
+        type: "SINGLE",
+        path: `/${path.ADMIN}/${path.MANAGE_ROUTES}`,
+    },
+    {
+        id: 573238,
+        name: "Quản lý các khóa học",
+        path: `/${path.ADMIN}/${path.MANAGE_COURSES}`,
+        icon: <RiPriceTag2Line size={20} />,
+        type: "SINGLE",
+    },
+    {
+        id: 5733678,
+        name: "Quản lý báo cáo tình trạng giao thông",
+        path: `/${path.ADMIN}/${path.MANAGER_TRAFFIC_STATUS}`,
+        icon: <MdReportGmailerrorred size={20} />,
+        type: "SINGLE",
+    },
+    {
+        id: 5733438,
+        name: "Quản lý bình luận",
+        path: `/${path.ADMIN}/${path.MANAGER_COMMENT}`,
+        icon: <MdReportGmailerrorred size={20} />,
+        type: "SINGLE",
+    },
+
+    {
+        id: 576538,
+        name: "Quản lý giao dịch",
+        path: `/${path.ADMIN}/${path.MANAGER_TRANSACTION}`,
+        icon: <RiPriceTag2Line size={20} />,
+        type: "SINGLE",
+    }
 ]
