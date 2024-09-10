@@ -60,18 +60,12 @@ const Login = ({ navigate, dispatch, location }) => {
               {variant === "LOGIN" ? "Đăng nhập thành viên" : "Tạo tài khoản"}
             </h2>
             <InputForm
-              label="Số điện thoại"
+              label="Email"
               register={register}
               errors={errors}
-              id="phoneNumber"
-              validate={{
-                required: "Trường này không được bỏ trống.",
-                pattern: {
-                  value: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
-                  message: "Số điện thoại không hợp lệ",
-                },
-              }}
-              placeholder="Nhập số điện thoại của bạn"
+              id="email"
+              validate={{ required: "Trường này không được bỏ trống." }}
+              placeholder="Nhập email của bạn"
               fullWidth
             />
             <InputForm
