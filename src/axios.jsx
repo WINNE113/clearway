@@ -1,6 +1,6 @@
 import axios from "axios"
 const instance = axios.create({
-  baseURL: "URL API",
+  baseURL: "https://clear-way.onrender.com/api",
 })
 instance.interceptors.request.use(
   function (config) {

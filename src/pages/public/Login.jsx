@@ -9,8 +9,11 @@ import { useSelector } from "react-redux"
 import withBaseTopping from "@/hocs/WithBaseTopping"
 import { Link, useSearchParams } from "react-router-dom"
 import { modal } from "@/redux/appSlice"
+import { apiLogin, apiRegister, apiVerifyEmail } from "@/apis/user";
+import { OtpVerify } from "../../components";
 
 const Login = ({ navigate, dispatch, location }) => {
+
   const [variant, setVariant] = useState(() => location.state || "LOGIN")
   const [isLoading, setIsLoading] = useState(false)
   const [searchParams] = useSearchParams()
@@ -25,8 +28,47 @@ const Login = ({ navigate, dispatch, location }) => {
     reset()
   }, [variant])
   const onSubmit = async (payload) => {
+    setIsLoading(true);
+    try {
+      if (variant === "LOGIN") {
+        const { email, password } = payload;
+        setIsLoading(true)
+        const response = await apiLogin({ email, password });
+        setIsLoading(false)
+        if (response?.is_ban === false) {
+          // If login is successful, navigate to the home page
+          Swal.fire('Success', 'Đăng nhập thành công!', 'success');
+          return navigate("/");
+        } else {
+          // Handle login error
+          Swal.fire('Oops...', 'Sai email hoặc mật khẩu. Vui lòng thử lại.', 'error');
+        }
+      } else if (variant === "REGISTER") {
+        // Handle register logic here
+        const { username, email, password } = payload;
+        setIsLoading(true)
+        const verifyEmailResponse = await apiVerifyEmail({ username, email, password });
+        setIsLoading(false)
+        if (verifyEmailResponse?.message === "Send OTP Success") {
+          console.log("come here")
+          dispatch(
+            modal({
+              isShowModal: true,
+              modalContent: <OtpVerify username={username} email={email} password={password} setVariant={setVariant} />,
+            })
+          );
+        } else {
+          Swal.fire('Oops...', verifyEmailResponse?.detail, 'error');
+        }
+      }
+    } catch (error) {
+      // Handle any unexpected errors
+      Swal.fire('Oops...', error.response?.data?.message || 'Đã xảy ra lỗi, vui lòng thử lại sau.', 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  }
   const toggleVariant = useCallback(() => {
     if (variant === "LOGIN") setVariant("REGISTER")
     else setVariant("LOGIN")
@@ -39,16 +81,20 @@ const Login = ({ navigate, dispatch, location }) => {
           to="/"
           className="mx-auto w-main text-white font-bold flex items-center justify-between text-3xl"
         >
-          <span>Clearway</span>
+          <img
+            src="/logo.svg"
+            alt="logo"
+            className="w-12 h-12 rounded-full object-cover"
+          />
           <span className="text-sm font-light">❓ Help</span>
         </Link>
       </div>
       <div className="flex flex-row w-full justify-center items-center">
         <div className="w-1/2 flex justify-center items-center">
-          <img 
+          <img
             src="https://st3.depositphotos.com/12925738/17656/v/450/depositphotos_176563036-stock-illustration-illustration-rush-hour-traffic-jam.jpg"
             className="max-w-full h-auto object-cover"
-            alt="logo image" 
+            alt="logo image"
           />
         </div>
         <div className="w-1/2 flex justify-center">
@@ -60,18 +106,12 @@ const Login = ({ navigate, dispatch, location }) => {
               {variant === "LOGIN" ? "Đăng nhập thành viên" : "Tạo tài khoản"}
             </h2>
             <InputForm
-              label="Số điện thoại"
+              label="Email"
               register={register}
               errors={errors}
-              id="phoneNumber"
-              validate={{
-                required: "Trường này không được bỏ trống.",
-                pattern: {
-                  value: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/,
-                  message: "Số điện thoại không hợp lệ",
-                },
-              }}
-              placeholder="Nhập số điện thoại của bạn"
+              id="email"
+              validate={{ required: "Trường này không được bỏ trống." }}
+              placeholder="Nhập email của bạn"
               fullWidth
             />
             <InputForm
@@ -82,7 +122,7 @@ const Login = ({ navigate, dispatch, location }) => {
               validate={{
                 required: "Trường này không được bỏ trống.",
                 minLength: {
-                  value: 6,
+                  value: 1,
                   message: "Mật khẩu bắt buộc tối thiểu 6 ký tự.",
                 },
               }}
@@ -96,7 +136,7 @@ const Login = ({ navigate, dispatch, location }) => {
                   label="Tên của bạn"
                   register={register}
                   errors={errors}
-                  id="userName"
+                  id="username"
                   validate={{ required: "Trường này không được bỏ trống." }}
                   fullWidth
                   placeholder={"Họ và tên của bạn"}

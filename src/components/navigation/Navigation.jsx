@@ -19,14 +19,18 @@ const Navigation = ({ dispatch, location, navigate }) => {
         e.stopPropagation()
         if (!isShowOptions) setIsShowOptions(true)
         else setIsShowOptions(false)
-      }
+    }
 
     return (
         <div className="flex bg-emerald-800 py-6 justify-center">
             <div className="w-main flex flex-col gap-4">
                 <div className="flex justify-between items-center">
                     <Link className="text-3xl text-white font-bold" to={"/"}>
-                        Clearway
+                        <img
+                            src="/logoTitle.svg"
+                            alt="logo"
+                            className="w-28 h-28"  // Điều chỉnh kích thước
+                        />
                     </Link>
                     <div className="flex items-center gap-4">
                         <div className="flex gap-2 justify-center items-center">
