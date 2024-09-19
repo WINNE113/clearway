@@ -6,6 +6,12 @@ export const apiLogin = (data) =>
         method: "post",
         data
     })
+export const apiLoginGoogle = (data) =>
+    axios({
+        url: "/auth/google",
+        method: "post",
+        data,
+    })
 export const apiRegister = (data) =>
     axios({
         url: "/auth/signup",
@@ -17,4 +23,9 @@ export const apiVerifyEmail = (data) =>
         url: "/auth/verify_email",
         method: "post",
         data
+    })
+export const apiGetCurrentProfile = (id) =>
+    axios({
+        url: "/user/" + id,
+        method: "get",
     })

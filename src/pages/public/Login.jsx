@@ -9,8 +9,11 @@ import { useSelector } from "react-redux"
 import withBaseTopping from "@/hocs/WithBaseTopping"
 import { Link, useSearchParams } from "react-router-dom"
 import { modal } from "@/redux/appSlice"
-import { apiLogin, apiRegister, apiVerifyEmail } from "@/apis/user";
+import { apiLogin, apiRegister, apiLoginGoogle, apiVerifyEmail, apiGetCurrentProfile } from "@/apis/user";
 import { OtpVerify } from "../../components";
+import { auth, provider } from "@/components/googleSignin/config";
+import { signInWithPopup } from "firebase/auth";
+import { FaGoogle } from "react-icons/fa";
 
 const Login = ({ navigate, dispatch, location }) => {
 
@@ -37,6 +40,10 @@ const Login = ({ navigate, dispatch, location }) => {
         setIsLoading(false)
         if (response?.is_ban === false) {
           // If login is successful, navigate to the home page
+          // const profileResponse = await apiGetCurrentProfile(response?._id) ;
+          // if(profileResponse){
+
+          // }
           Swal.fire('Success', 'Đăng nhập thành công!', 'success');
           return navigate("/");
         } else {
@@ -45,16 +52,20 @@ const Login = ({ navigate, dispatch, location }) => {
         }
       } else if (variant === "REGISTER") {
         // Handle register logic here
-        const { username, email, password } = payload;
+        const { rePassword, email, password } = payload;
         setIsLoading(true)
-        const verifyEmailResponse = await apiVerifyEmail({ username, email, password });
+        const verifyEmailResponse = await apiVerifyEmail({
+          email: email,
+          password: password,
+          re_password: rePassword
+        });
         setIsLoading(false)
-        if (verifyEmailResponse?.message === "Send OTP Success") {
+        if (verifyEmailResponse?.message === "Email has been sent OTP successfully") {
           console.log("come here")
           dispatch(
             modal({
               isShowModal: true,
-              modalContent: <OtpVerify username={username} email={email} password={password} setVariant={setVariant} />,
+              modalContent: <OtpVerify rePassword={rePassword} email={email} password={password} setVariant={setVariant} />,
             })
           );
         } else {
@@ -73,6 +84,35 @@ const Login = ({ navigate, dispatch, location }) => {
     if (variant === "LOGIN") setVariant("REGISTER")
     else setVariant("LOGIN")
   }, [variant])
+
+  const handleLoginWithGoogle = async () => {
+    try {
+      const data = await signInWithPopup(auth, provider);
+      // Make an API call to login the user
+      const response = await apiLoginGoogle({
+        name: data.user.displayName,
+        email: data.user.email,
+        googlePhotoUrl: data.user.photoURL,
+      });
+
+      if (response?.is_ban === false) {
+        // If login is successful, navigate to the home page
+        Swal.fire('Success', 'Đăng nhập thành công!', 'success');
+        navigate("/");
+      } else {
+        // Handle if the user is banned or other issues
+        Swal.fire('Oops...', 'Tài khoản của bạn bị khóa. Vui lòng liên hệ với hỗ trợ.', 'error');
+      }
+
+      console.log("Account google: " + data.user.email);
+    } catch (error) {
+      // Handle errors
+      Swal.fire('Oops...', 'Đăng nhập thất bại. Vui lòng thử lại.', 'error');
+      console.error("Error during Google login:", error);
+    }
+  };
+
+
 
   return (
     <div className="w-full flex flex-col items-center gap-8">
@@ -133,13 +173,16 @@ const Login = ({ navigate, dispatch, location }) => {
             {variant === "REGISTER" && (
               <Fragment>
                 <InputForm
-                  label="Tên của bạn"
+                  label="Nhập lại mật khẩu"
                   register={register}
                   errors={errors}
-                  id="username"
-                  validate={{ required: "Trường này không được bỏ trống." }}
+                  id="rePassword"
+                  validate={{
+                    required: "Trường này không được bỏ trống.",
+                  }}
+                  type="password"
                   fullWidth
-                  placeholder={"Họ và tên của bạn"}
+                  placeholder="Nhập lại mật khẩu của bạn"
                 />
               </Fragment>
             )}
@@ -147,6 +190,29 @@ const Login = ({ navigate, dispatch, location }) => {
             <Button disabled={isLoading} type="submit" fullWidth className="mt-3">
               {variant === "LOGIN" ? "Đăng nhập" : "Đăng ký tài khoản"}
             </Button>
+
+            {variant === "LOGIN" && (
+              <div className="flex flex-col items-center">
+                <div className="relative mb-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                  </div>
+                </div>
+                <Button
+                  className="w-full flex items-center justify-center"
+                  variant="outline"
+                  onClick={handleLoginWithGoogle}
+                >
+                  <FaGoogle className="mr-2 h-4 w-4" /> {/* Biểu tượng Google */}
+                  Sign in with Google
+                </Button>
+              </div>
+            )}
+
+
             <div className="flex gap-2">
               <span>
                 {variant === "LOGIN"

@@ -8,12 +8,12 @@ import withBaseTopping from "@/hocs/WithBaseTopping"
 import { modal } from "@/redux/appSlice"
 import { toast } from "react-toastify"
 import Swal from "sweetalert2"
-const OtpVerify = ({username, email, password, dispatch, setVariant }) => {
+const OtpVerify = ({rePassword, email, password, dispatch, setVariant }) => {
   console.log("Come otp verify")
   const [otp, setOtp] = useState("")
   const handleSendOTP = async () => {
     const response = await apiRegister({
-      username,
+      re_password: rePassword,
       email,
       password,
       otp
