@@ -9,7 +9,7 @@ const Button = ({
   disabled = false,
   onClick,
   type = "button",
-  bgColor = "bg-emerald-600",
+  bgColor = "bg-blue-600",
   textColor = "text-white",
   className,
 }) => {
