@@ -22,19 +22,15 @@ const AdminSidebar = ({ dispatch }) => {
     <div className="w-full min-h-screen">
       <div className="py-12 pb-6 flex flex-col gap-1 justify-center items-center w-full">
         <span className="text-3xl text-emerald-700 tracking-tight font-bold">
-          SweetDream
-        </span>
-        <small className="text-sm font-medium text-red-500 ">
           Admin workspace
-        </small>
+        </span>
         <div className="mt-4 flex flex-col items-center justify-center gap-1">
           <img
-            src= "/user.svg"
+            src= "/logo.svg"
             alt="avatar"
             className="w-24 h-24 rounded-full object-cover"
           />
-          <span className="text-main-red font-bold">NGUYEN VAN A</span>
-          <span>#Code ID</span>
+          <span className="text-main-red font-bold text-orange-400">Clear way</span>
         </div>
       </div>
       <div>
@@ -92,14 +88,6 @@ const AdminSidebar = ({ dispatch }) => {
             )}
           </Fragment>
         ))}
-        <span
-          className={clsx(
-            "flex cursor-pointer hover:bg-blue-100 w-full p-3 items-center gap-2"
-          )}
-        >
-          <AiOutlineLogout size={20} />
-          <span>Đăng xuất</span>
-        </span>
       </div>
     </div>
   )

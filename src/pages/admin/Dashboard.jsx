@@ -1,7 +1,5 @@
 import { Title } from "../../components";
 import { Fragment, useState, useEffect } from "react"
-import { PieChart } from 'react-minimal-pie-chart';
-import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,8 +9,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { data } from "autoprefixer";
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,141 +19,294 @@ ChartJS.register(
   Legend
 );
 
+import { Input } from "antd";
+import { Button } from "../../components";
+import { Bell, HelpCircle, LogOut, Search, User } from "lucide-react";
+import { CiSearch } from "react-icons/ci";
+import { IoMdNotificationsOutline, IoMdArrowDropdown } from "react-icons/io";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import { FaCalendarAlt, FaUserCog, FaUserAstronaut, FaUsers } from 'react-icons/fa'; // Thư viện icon
+import { PiTrafficSignalLight } from "react-icons/pi";
+import { MdAdminPanelSettings, MdEmail } from "react-icons/md";
+import { IoMdDownload } from "react-icons/io";
+import { Link } from "react-router-dom";
+import { IoCallSharp } from "react-icons/io5";
 
 const Dashboard = () => {
 
-  const [trafficStatusPercent, setTrafficStatusPercent] = useState([70, 20, 10]); // Dữ liệu mẫu cho trạng thái tình trạng giao thông
-  const [userStatusPercent, setUserStatusPercent] = useState([1, 50, 20, 29]); // Dữ liệu mẫu cho trạng thái người dùng
-  const [orderLabelData, setOrderLabelData] = useState(['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4']); // Dữ liệu mẫu cho nhãn doanh thu
-  const [orderData, setOrderData] = useState([200, 300, 400, 500]); // Dữ liệu mẫu cho doanh thu
-  const [paymentTransactionLabelData, setPaymentTransactionLabelData] = useState(['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4']); // Dữ liệu mẫu cho nhãn nạp tiền
-  const [paymentTransactionData, setPaymentTransactionData] = useState([100, 150, 200, 250]); // Dữ liệu mẫu cho nạp tiền
+  // Sample data
+  const userDataTabs = [
+    {
+      value: "generalUser",
+      label: "Danh Sách General User",
+      data: [
+        { id: 1, fullName: "BabaYaga (WIN)", email: "babayaga@gmail.com", role: "Admin", status: "Đang hoạt động", activity: "Cập nhật" },
+        { id: 2, fullName: "Nguyễn Văn A", email: "nguyenvana@gmail.com", role: "General User", status: "Đang bị khóa", activity: "Cập nhật" },
+        { id: 3, fullName: "Nguyễn Văn B", email: "nguyenvanb@example.com", role: "Corporate User", status: "Đang hoạt động", activity: "Cập nhật" },
+      ]
+    },
+    {
+      value: "corporateUser",
+      label: "Danh Sách Corporate User",
+      data: [
+        { id: 1, fullName: "BabaYaga (WIN)", email: "babayaga@gmail.com", role: "Admin", status: "Đang hoạt động", activity: "Cập nhật" },
+        { id: 2, fullName: "Nguyễn Văn A", email: "nguyenvana@gmail.com", role: "General User", status: "Đang bị khóa", activity: "Cập nhật" },
+        { id: 3, fullName: "Nguyễn Văn B", email: "nguyenvanb@example.com", role: "Corporate User", status: "Đang hoạt động", activity: "Cập nhật" },
+      ]
+    },
+    {
+      value: "trafficAuthoriry",
+      label: "Danh Sách Traffic Authority",
+      data: [
+        { id: 1, fullName: "BabaYaga (WIN)", email: "babayaga@gmail.com", role: "Admin", status: "Đang hoạt động", activity: "Cập nhật" },
+        { id: 2, fullName: "Nguyễn Văn A", email: "nguyenvana@gmail.com", role: "General User", status: "Đang bị khóa", activity: "Cập nhật" },
+        { id: 3, fullName: "Nguyễn Văn B", email: "nguyenvanb@example.com", role: "Corporate User", status: "Đang hoạt động", activity: "Cập nhật" },
+      ]
+    },
+    {
+      value: "adminUser",
+      label: "Danh Sách Admin",
+      data: [
+        { id: 1, fullName: "BabaYaga (WIN)", email: "babayaga@gmail.com", role: "Admin", status: "Đang hoạt động", activity: "Cập nhật" },
+        { id: 2, fullName: "Nguyễn Văn A", email: "nguyenvana@gmail.com", role: "General User", status: "Đang bị khóa", activity: "Cập nhật" },
+        { id: 3, fullName: "Nguyễn Văn B", email: "nguyenvanb@example.com", role: "Corporate User", status: "Đang hoạt động", activity: "Cập nhật" },
+      ]
+    },
+  ]
 
+  // Quản lý trạng thái mở/đóng của user dropdown
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [showCalendar, setShowCalendar] = useState(false); // State để hiển thị lịch
+  const [activeTab, setActiveTab] = useState("generalUser")
 
+  const handleTabChange = (tabValue) => {
+    setActiveTab(tabValue)
+  }
 
-  const dataCircleChart = [
-    { value: trafficStatusPercent[0], color: '#3cb371' }, // Approved color
-    { value: trafficStatusPercent[1], color: '#ff0000' }, // Rejected color
-    { value: trafficStatusPercent[2], color: '#0096889c' }, // Review color
-    { value: 100 - trafficStatusPercent[0] - trafficStatusPercent[1] - trafficStatusPercent[2], color: '#5858580f' }, // Background color
-  ];
-
-  const dataUserCircleChart = [
-    { value: userStatusPercent[0], color: '#db323b' }, // admin user
-    { value: userStatusPercent[1], color: '#5835b9' }, // genaral user
-    { value: userStatusPercent[2], color: '#3cb361' }, // corporate user
-    { value: userStatusPercent[3], color: '#0000ff' }, // Traffic Authority
-    { value: 100 - userStatusPercent[1] - userStatusPercent[2] - userStatusPercent[3] - userStatusPercent[4], color: '#5858580f' }, // Background color
-  ];
-
-  const dataLineChart = {
-    labels: orderLabelData,
-    datasets: [
-      {
-        label: 'Thống kê',
-        data: orderData,
-        borderColor: '#3b82f6',
-        backgroundColor: '#1e40af',
-      }
-    ],
+  const toggleDropdown = () => {
+    setIsOpenDropdown(!isOpenDropdown); // Đảo trạng thái
   };
 
-  const dataLineChartPaymentTransaction = {
-    labels: paymentTransactionLabelData,
-    datasets: [
-      {
-        label: 'Doanh thu',
-        data: paymentTransactionData,
-        borderColor: '#3b82f6',
-        backgroundColor: '#1e40af',
-      }
-    ],
+  const handleToggleCalendar = () => {
+    setShowCalendar(!showCalendar);
   };
+
   return (
-    <div>
-      <Title title="Thống kê"></Title>
-      <div className="grid grid-cols-2 grid-rows-2">
-        <div className="mx-2 my-2 border border-[#E6E9ED] rounded-md shadow">
-          <div className="border-b-2 border-[#E6E9ED] mx-4 py-2">
-            <h1 className="text-2xl font-bold text-[#73879E] px-2">Tình trạng giao thông</h1>
-          </div>
-          <div className="grid grid-cols-2 w-full px-2">
-            <PieChart className="px-4"
-              data={dataCircleChart}
-              style={{ width: '240px', height: '240px' }} // Adjust the size as needed
-              startAngle={-90}
-              animate
-            />
-            <div className="flex flex-col pt-5">
-              <span className="text-sm font-semibold text-[white] rounded-full bg-[#37d4b29c] px-3 py-2 mb-2 text-center min-w-[6rem]">Tình trạng A</span>
-              <span className="text-sm font-semibold text-[black] border rounded-full bg-[#3cb371] px-3 py-2 mb-2 text-center min-w-[6rem]">Tình trạng B</span>
-              <span className="text-sm font-semibold text-[black] border rounded-full bg-[#ff0000] px-3 py-2 mb-2 text-center min-w-[6rem]">Tình trạng C</span>
+    <div className="flex h-screen bg-gray-100">
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Navigation */}
+        <header className="bg-white shadow-sm rounded-lg">
+          <div className="flex items-center justify-between p-4">
+            <div className="w-1/3"></div>
+            <div className="w-1/3 flex justify-center">
+              <div className="relative w-full max-w-md">
+                <span className="absolute inset-y-0 left-3 flex items-center z-10">
+                  <CiSearch size={22} className="text-gray-600" />
+                </span>
+                <Input
+                  type="search"
+                  placeholder="Nhập nội dung tìm kiếm"
+                  className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-500"
+                />
+              </div>
+            </div>
+            <div className="w-1/3 flex justify-end items-center space-x-2">
+              <div className="relative">
+                <Button variant="ghost" size="icon" className="bg-white text-black relative">
+                  <IoMdNotificationsOutline size={25} className="relative" />
+                  <span className="absolute top-4 right-5 translate-x-1/2 -translate-y-1/2 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+                </Button>
+              </div>
+              <div className="relative">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full border bg-slate-300 text-cyan-800 flex items-center"
+                  onClick={toggleDropdown}
+                >
+                  <User className="h-5 w-5" />
+                  <IoMdArrowDropdown className="ml-2 h-5 w-5" />
+                </Button>
+
+                {isOpenDropdown && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border">
+                    <ul className="py-2">
+                      <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Tùy chọn 1</li>
+                      <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Tùy chọn 2</li>
+                      <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Tùy chọn 3</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <Button variant="ghost" size="icon" className=" bg-white text-cyan-800">
+                <LogOut className="h-5 w-5" />
+                <span>Đăng xuất</span>
+              </Button>
             </div>
           </div>
-          <div className="flex space-x-2 ml-7">
-            <div className="flex-1 border border-[#E6E9ED] rounded-full bg-[#37d4b29c] flex items-center justify-center">
-              <span className="py-2 text-center text-[white] text-sm font-semibold">{trafficStatusPercent[2]}%</span>
+        </header>
+        {/* Main Content */}
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
+          <div className="grid grid-cols-3 gap-6">
+            <div className="col-span-2">
+              {/*Thông tin hệ thống*/}
+              <div className=" bg-white rounded-lg shadow-sm p-3">
+                <div className="grid grid-cols-5 gap-2">
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1">
+                    <h2 className="text-xs font-bold">Thông tin hệ thống</h2>
+                    <div className="flex items-center mt-3 mb-3">
+                      <Input
+                        type="text"
+                        value={date.toLocaleDateString()}
+                        readOnly
+                        className="border rounded-lg p-2 w-28"
+                      />
+                      <FaCalendarAlt size={15} className="ml-3 cursor-pointer" onClick={handleToggleCalendar} />
+                    </div>
+                    {showCalendar && (
+                      <div className="absolute mt-2 z-10">
+                        <Calendar onChange={setDate} value={date} />
+                      </div>
+                    )}
+                    <span className="text-xs font-bold">Tổng: 9 người dùng</span>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md grid-cols-1">
+                    <h2 className="text-xs font-bold flex items-center justify-center">
+                      <FaUserCog className="mr-2" />General User
+                    </h2>
+                    <h2 className="text-sm text-green-400 mt-3">1200 Hoạt động</h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3">1200 Không Hoạt động</h2>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md grid-cols-1">
+                    <h2 className="text-xs font-bold flex items-center justify-center">
+                      <FaUserAstronaut className="mr-2" />Corporate User
+                    </h2>
+                    <h2 className="text-sm text-green-400 mt-3">1200 Hoạt động</h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3">1200 Không Hoạt động</h2>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md grid-cols-1">
+                    <h2 className="text-xs font-bold flex items-center justify-center">
+                      <PiTrafficSignalLight className="mr-2" />Traffic Authority
+                    </h2>
+                    <h2 className="text-sm text-green-400 mt-3">1200 Hoạt động</h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3">1200 Không Hoạt động</h2>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md grid-cols-1">
+                    <h2 className="text-xs font-bold flex items-center justify-center">
+                      <MdAdminPanelSettings className="mr-2" />Admin
+                    </h2>
+                    <h2 className="text-sm text-green-400 mt-3">1200 Hoạt động</h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3">1200 Không Hoạt động</h2>
+                  </div>
+                </div>
+              </div>
+
+              {/* Thông tin người dùng*/}
+              <div className=" bg-white rounded-lg shadow-md p-6 mt-10">
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="text-xl font-bold mb-4">Thông tin người dùng</h2>
+                  </div>
+                  <div className="flex items-center">
+                    <h2 className="text-xl font-bold mr-9 text-blue-600">Gửi thông báo</h2>
+                    <Button>
+                      <IoMdDownload size={15} className="text-white" />Tải danh sách
+                    </Button>
+                  </div>
+                </div>
+                <div className="mb-4 mt-5">
+                  {userDataTabs.map((tab) => (
+                    <button
+                      key={tab.value}
+                      className={`mr-2 px-2 py-3 text-sm rounded ${activeTab === tab.value ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                      onClick={() => handleTabChange(tab.value)}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full bg-white">
+                    <thead>
+                      <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th className="py-3 px-6 text-left">Họ và Tên</th>
+                        <th className="py-3 px-6 text-left">Email</th>
+                        <th className="py-3 px-6 text-left">Role</th>
+                        <th className="py-3 px-6 text-left">Tình trạng</th>
+                        <th className="py-3 px-6 text-left">Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-gray-600 text-sm font-light">
+                      {userDataTabs.find(tab => tab.value === activeTab).data.map((user) => (
+                        <tr key={user.id} className="border-b border-gray-200 hover:bg-gray-100">
+                          <td className="py-3 px-6 text-left whitespace-nowrap">{user.fullName}</td>
+                          <td className="py-3 px-6 text-left">{user.email}</td>
+                          <td className="py-3 px-6 text-left">{user.role}</td>
+                          <td className="py-3 px-6 text-left">{user.status}</td>
+                          <td className="py-3 px-6 text-left">{user.activity}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-            <div className="flex-1 border border-[#E6E9ED] rounded-full bg-[#3cb371] flex items-center flex items-center justify-center">
-              <span className="py-2 text-center text-[white] text-sm font-semibold">{trafficStatusPercent[0]}%</span>
-            </div>
-            <div className="flex-1 border border-[#E6E9ED] rounded-full bg-[#ff0000] flex items-center flex items-center justify-center">
-              <span className="py-2 text-center text-[white] text-sm font-semibold">{trafficStatusPercent[1]}%</span>
+            {/* Notifications Panel */}
+            <div className="bg-gray-100 rounded-lg shadow-md p-6 col-span-1">
+              <div className="bg-gray-100 rounded-lg shadow-md p-6 mb-5">
+                <h2 className="text-2xl font-bold mb-4 flex items-center bord">
+                  Gửi thông báo
+                  <Bell size={25} className="ml-2 text-gray-500 text-red-400" />
+                </h2>
+                <ul className="space-y-2">
+                  <li className="flex items-center p-2 bg-white text-blue-900 font-bold rounded shadow-md"><FaUsers className="mr-3" /> General User</li>
+                  <li className="flex items-center p-2 bg-white text-blue-900 font-bold rounded shadow-md"><FaUserCog className="mr-3" /> Corporate User</li>
+                  <li className="flex items-center p-2 bg-white text-blue-900 font-bold rounded shadow-md"><FaUserCog className="mr-3" />Traffic Authority</li>
+                </ul>
+              </div >
+              <div className="bg-gray-100 rounded-lg shadow-md p-6">
+                <h2 className="text-2xl font-bold mb-4 flex items-center">
+                  Cần sự trợ giúp
+                  <HelpCircle className="ml-2 h-5 w-5 text-red-500" />
+                </h2>
+                <div className="flex items-center bg-white justify-center border p-4 shadow-md">
+                  <div className="mr-3">
+                    <img className="w-16 h-16" src="/introduction.svg"></img>
+                  </div>
+                  <div>
+                    <h1 className="text-blue-900">Bắt đầu với ClearWay</h1>
+                    <h1>Nhấn vào để tải về máy</h1>
+                    <Link>Hướng dẫn sử dụng</Link>
+                  </div>
+                </div>
+                <div className="flex items-center mt-5 bg-white justify-center border p-4 shadow-md">
+                  <div className="mr-3">
+                    <img className="w-16 h-16" src="/introduction.svg"></img>
+                  </div>
+                  <div>
+                    <h1 className="text-blue-900">Lưu ý sử dụng hệ thống</h1>
+                    <Link>Nhấn vào để xem</Link>
+                  </div>
+                </div>
+                <div className="flex items-center mt-5 bg-white justify-center border p-4 shadow-md">
+                  <div>
+                    <h1 className="text-xl font-bold text-blue-800">Liên hệ hỗ trợ kỹ thuật: </h1>
+                    <h1 className="text-blue-900 flex items-center mt-3"><MdEmail className="mr-3 text-blue-700" />clearwaytms@gmail.com</h1>
+                    <h1 className="text-blue-900 flex items-center mt-3"><IoCallSharp className="mr-3 text-blue-600" />+84 332101033</h1>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mx-2 my-2 border border-[#E6E9ED] rounded-md shadow">
-          <div className="border-b-2 border-[#E6E9ED] mx-4 py-2">
-            <h1 className="text-2xl font-bold text-[#73879E] px-2">Trạng thái tài khoản người dùng</h1>
-          </div>
-          <div className="grid grid-cols-2 w-full px-2">
-            <PieChart className="px-4"
-              data={dataUserCircleChart}
-              style={{ width: '240px', height: '240px' }} // Adjust the size as needed
-              startAngle={-90}
-              animate
-            />
-            <div className="flex flex-col pt-5">
-              <span className="text-sm font-semibold text-[white] rounded-full bg-[#db323b] px-3 py-2 mb-2 text-center min-w-[6rem]">Admin</span>
-              <span className="text-sm font-semibold text-[white] rounded-full bg-[#5835b9] px-3 py-2 mb-2 text-center min-w-[6rem]">Người dùng chung</span>
-              <span className="text-sm font-semibold text-[black] border rounded-full bg-[#3cb361] px-3 py-2 mb-2 text-center min-w-[6rem]">Người dùng doanh nghiệp</span>
-              <span className="text-sm font-semibold text-[white] rounded-full bg-[#0000ff] px-3 py-2 mb-2 text-center min-w-[6rem]">Cơ quan quản lý giao thông</span>
-            </div>
-          </div>
-          <div className="flex space-x-2 ml-7">
-            <div className="flex-1 border border-[#E6E9ED] rounded-full bg-[#db323b] flex items-center justify-center">
-              <span className="py-2 text-center text-[white] text-sm font-semibold">{userStatusPercent[0]} Tài khoản</span>
-            </div>
-            <div className="flex-1 border border-[#E6E9ED] rounded-full bg-[#5835b9] flex items-center justify-center">
-              <span className="py-2 text-center text-[white] text-sm font-semibold">{userStatusPercent[1]} Tài khoản</span>
-            </div>
-            <div className="flex-1 border border-[#E6E9ED] rounded-full bg-[#3cb361] flex items-center justify-center">
-              <span className="py-2 text-center text-[white] text-sm font-semibold">{userStatusPercent[2]} Tài khoản</span>
-            </div>
-            <div className="flex-1 border border-[#E6E9ED] rounded-full bg-[#0000ff] flex items-center flex items-center justify-center">
-              <span className="py-2 text-center text-[white] text-sm font-semibold">{userStatusPercent[3]} Tài khoản</span>
-            </div>
-          </div>
-        </div>
-        <div className="mx-2 my-2 border border-[#E6E9ED] rounded-md shadow">
-          <div className="border-b-2 border-[#E6E9ED] mx-4 py-2">
-            <h1 className="text-2xl font-bold text-[#73879E] px-2">Hiệu xuất hệ thống</h1>
-          </div>
-          <div>
-            <Line data={dataLineChart} />
-          </div>
-        </div>
-        <div className="mx-2 my-2 border border-[#E6E9ED] rounded-md shadow">
-          <div className="border-b-2 border-[#E6E9ED] mx-4 py-2">
-            <h1 className="text-2xl font-bold text-[#73879E] px-2">Nạp tiền vào hệ thống</h1>
-          </div>
-          <div>
-            <Line data={dataLineChartPaymentTransaction} />
-          </div>
-        </div>
+        </main>
       </div>
     </div>
   )
 }
-
 export default Dashboard
