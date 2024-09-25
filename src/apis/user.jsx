@@ -1,4 +1,5 @@
 import axios from "@/axios"
+import { data } from "autoprefixer"
 
 export const apiLogin = (data) =>
     axios({
@@ -29,3 +30,22 @@ export const apiGetCurrentProfile = (id) =>
         url: "/user/" + id,
         method: "get",
     })
+export const apiForgetPassword = (data) =>
+    axios({
+        url: "/auth/forgot_password",
+        method: "post",
+        data
+    })
+export const apiResetPasswordOTP = (data) =>
+    axios({
+        url: "/auth/reset_password_otp",
+        method: "post",
+        data
+    })
+export const apiReNewPassword = (data) =>
+    axios({
+        url: "/auth/reset_password",
+        method: "post",
+        data
+    })
+

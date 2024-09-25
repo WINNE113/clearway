@@ -3,6 +3,9 @@ const path = {
     INVALID: "*",
     HOME: "",
     LOGIN: "login",
+    FORGET_PASSWORD: "forget-passwod",
+    RENEW_PASSWORD: "renew-passwod",
+
 
     ADMIN: "admin",
     DASHBOARD: "dashboard",

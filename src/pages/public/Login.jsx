@@ -15,6 +15,7 @@ import { OtpVerify } from "../../components";
 import { auth, provider } from "@/components/googleSignin/config";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import path from "@/ultils/path";
 
 const Login = ({ navigate, dispatch, location }) => {
 
@@ -24,6 +25,8 @@ const Login = ({ navigate, dispatch, location }) => {
   const [searchParams] = useSearchParams()
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
+
+
 
   const {
     register,
@@ -242,7 +245,7 @@ const Login = ({ navigate, dispatch, location }) => {
                 </div>
 
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-blue-500 hover:text-indigo-500">
+                  <a href={path.FORGET_PASSWORD} className="font-medium text-blue-500 hover:text-indigo-500">
                     Forgot Password?
                   </a>
                 </div>
@@ -260,7 +263,7 @@ const Login = ({ navigate, dispatch, location }) => {
                     validate={{
                       required: "Trường này không được bỏ trống.",
                     }}
-                    type={showRePassword ? "password" : "text"}
+                    type={showRePassword ? "text" : "password"}
                     fullWidth
                     placeholder="**************"
                   />

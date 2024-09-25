@@ -6,10 +6,11 @@ import { Route, Routes } from 'react-router-dom'
 import Layout from './pages/public/Layout'
 import Home from './pages/public/Home'
 import Login from './pages/public/Login'
+import ForgetPassword from './pages/public/ForgetPassword'
 import LayoutAdmin from './pages/admin/LayoutAdmin'
 import Dashboard from './pages/admin/Dashboard'
 import { Modal } from './components'
-
+import RenewPassword from './pages/public/RenewPassword'
 function App() {
   const { isLoading, isShowModal, modalContent } = useSelector(
     (state) => state.app
@@ -29,6 +30,8 @@ function App() {
           </Route>
         </Route>
         <Route path={path.LOGIN} element={<Login />} />
+        <Route path={path.FORGET_PASSWORD} element={<ForgetPassword />} />
+        <Route path={path.RENEW_PASSWORD} element={<RenewPassword />} />
 
         <Route path={path.ADMIN} element={<LayoutAdmin />}>
           <Route path={path.DASHBOARD} element={<Dashboard />} />
