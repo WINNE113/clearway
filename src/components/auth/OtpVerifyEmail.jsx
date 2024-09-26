@@ -24,7 +24,7 @@ const OtpVerifyEmail = ({ email, dispatch }) => {
                 title: "Congrats!",
             }).then(() => {
                 dispatch(modal({ isShowModal: false, modalContent: null }))
-                navigate(`${path.RENEW_PASSWORD}?id=${response.id}`);
+                navigate(`${path.RENEW_PASSWORD}?uid=${response.id}`);
             })
         } else toast.error('Lỗi xác thực OTP')
     }

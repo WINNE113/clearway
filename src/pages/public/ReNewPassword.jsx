@@ -3,18 +3,23 @@ import React, { useState, useEffect, useCallback } from "react";
 import { InputForm, Button } from "@/components";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { useParams } from "react-router-dom";
 import { apiReNewPassword } from "@/apis/user";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate  } from "react-router-dom";
 import path from "@/ultils/path";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 const ReNewPassword = ({ navigate, dispatch }) => {
+
+    const location = useLocation();
+
     const natigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
-    const { id } = useParams();
+
+    const queryParams = new URLSearchParams(location.search);
+    const uid = queryParams.get('uid')
+
     const {
         register,
         handleSubmit,
@@ -27,13 +32,13 @@ const ReNewPassword = ({ navigate, dispatch }) => {
         try {
             const { password, confirmPassword } = payload;
             const response = await apiReNewPassword({
-                id: id,
+                id: uid,
                 new_password: password,
                 re_new_password: confirmPassword
             })
             if (response?.message === "Password has been reset successfully") {
                 toast.success(response?.message);
-                natigate(`${path.LOGIN}`)
+                natigate("/login")
             } else {
                 toast.error(response?.detail);
                 reset();
