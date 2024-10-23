@@ -8,6 +8,13 @@ export const generateRange = (start, end) => {
   return Array.from({ length }, (_, index) => start + index)
 }
 
+export const getCookieValue = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
 export const formatMoney = (number = 0) => {
   if (!Number(number)) return 0
   return Number(number?.toFixed(1)).toLocaleString()

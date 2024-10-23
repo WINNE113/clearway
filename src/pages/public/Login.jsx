@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import Swal from "sweetalert2"
 import { useSelector } from "react-redux"
 import withBaseTopping from "@/hocs/WithBaseTopping"
-import { Link, useSearchParams } from "react-router-dom"
+import { json, Link, useSearchParams } from "react-router-dom"
 import { modal } from "@/redux/appSlice"
 import { apiLogin, apiRegister, apiLoginGoogle, apiVerifyEmail, apiGetCurrentProfile } from "@/apis/user";
 import { OtpVerify } from "../../components";
@@ -16,6 +16,7 @@ import { auth, provider } from "@/components/googleSignin/config";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import path from "@/ultils/path";
+import { getCookieValue } from "@/ultils/fn";
 
 const Login = ({ navigate, dispatch, location }) => {
 
@@ -46,12 +47,15 @@ const Login = ({ navigate, dispatch, location }) => {
         setIsLoading(true)
         const response = await apiLogin({ email, password });
         setIsLoading(false)
-        if (response?.is_ban === false) {
-          // If login is successful, navigate to the home page
-          // const profileResponse = await apiGetCurrentProfile(response?._id) ;
-          // if(profileResponse){
-
-          // }
+        if (response?.is_ban === false) {          
+          const accessToken = getCookieValue("access_token");
+          if (accessToken) {
+            console.log("accessToken: " + accessToken);
+            Swal.fire('Success', 'Đăng nhập thành công!', 'success');
+            navigate("/");  // Redirect to home page
+          } else {
+            Swal.fire('Oops...', 'Không thể lấy access token, vui lòng thử lại.', 'error');
+          }
           Swal.fire('Success', 'Đăng nhập thành công!', 'success');
           return navigate("/");
         } else {

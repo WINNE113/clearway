@@ -29,7 +29,7 @@ const Footer = () => {
         <div className="col-span-1 py-6 flex flex-col gap-1">
           <h1 className="uppercase font-bold pb-2">hệ thống</h1>
           {menu.map((el) => (
-            <Link to={el.path} className="hover:underline">
+            <Link key={el.id} to={el.path} className="hover:underline">
               {el.subname}
             </Link>
           ))}
