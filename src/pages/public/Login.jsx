@@ -16,7 +16,8 @@ import { auth, provider } from "@/components/googleSignin/config";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import path from "@/ultils/path";
-import { getCookieValue } from "@/ultils/fn";
+import { login } from "@/redux/userSlice";
+import { getCurrent } from "@/redux/action";
 
 const Login = ({ navigate, dispatch, location }) => {
 
@@ -47,16 +48,13 @@ const Login = ({ navigate, dispatch, location }) => {
         setIsLoading(true)
         const response = await apiLogin({ email, password });
         setIsLoading(false)
-        if (response?.is_ban === false) {          
-          const accessToken = getCookieValue("access_token");
-          if (accessToken) {
-            console.log("accessToken: " + accessToken);
-            Swal.fire('Success', 'Đăng nhập thành công!', 'success');
-            navigate("/");  // Redirect to home page
-          } else {
-            Swal.fire('Oops...', 'Không thể lấy access token, vui lòng thử lại.', 'error');
+        if (response?.is_ban === false) {       
+          await dispatch(login({token: response.access_token}));  
+          Swal.fire('Success', 'Đăng nhập thành côngg!', 'success');
+          localStorage.setItem("_id", response._id);
+          if(response.role == 1){
+            return navigate("/admin/dashboard");
           }
-          Swal.fire('Success', 'Đăng nhập thành công!', 'success');
           return navigate("/");
         } else {
           // Handle login error

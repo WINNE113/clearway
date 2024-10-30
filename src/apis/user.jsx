@@ -1,5 +1,4 @@
 import axios from "@/axios"
-import { data } from "autoprefixer"
 
 export const apiLogin = (data) =>
     axios({

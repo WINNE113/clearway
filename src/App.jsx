@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ToastContainer } from "react-toastify"
 import { useDispatch, useSelector } from 'react-redux'
 import path from './ultils/path'
@@ -11,10 +11,27 @@ import LayoutAdmin from './pages/admin/LayoutAdmin'
 import Dashboard from './pages/admin/Dashboard'
 import { Modal } from './components'
 import RenewPassword from './pages/public/RenewPassword'
+import ManageRouters from './pages/admin/ManageRouters'
+import ManageUser from './pages/admin/ManageUser'
+import { getCurrent } from './redux/action'
 function App() {
   const { isLoading, isShowModal, modalContent } = useSelector(
     (state) => state.app
   )
+  const dispatch = useDispatch()
+  const { token } = useSelector((state) => state.user)
+
+
+  // Xử lý logic lấy dữ liệu dựa vào token (nếu có token thì lấy thêm wishlist và requestForQuotation)
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch(getCurrent());
+    };
+    const timeoutId = setTimeout(fetchData, 800);
+
+    return () => clearTimeout(timeoutId);
+  }, [token, dispatch]);
+
   return (
     <>
       {isShowModal && <Modal>{modalContent}</Modal>}
@@ -35,6 +52,8 @@ function App() {
 
         <Route path={path.ADMIN} element={<LayoutAdmin />}>
           <Route path={path.DASHBOARD} element={<Dashboard />} />
+          <Route path={path.MANAGE_ROUTES} element={<ManageRouters />} />
+          <Route path={path.MANAGE_USER} element={<ManageUser />} />
         </Route>
       </Routes>
       <ToastContainer

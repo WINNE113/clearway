@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
 import Header from "../../components/header/Header"
-const Home = () => {
-  const dispatch = useDispatch()
+import WithBaseTopping from "@/hocs/withBaseTopping"
+
+const Home = ({ dispatch }) => {
+
   return (
     <section className="pb-16">
       <Header />
@@ -16,4 +17,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default WithBaseTopping(Home)
