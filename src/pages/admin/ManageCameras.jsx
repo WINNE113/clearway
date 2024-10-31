@@ -5,6 +5,13 @@ import { IoMdAdd } from "react-icons/io";
 import { Button } from '@/components';
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { Bell, HelpCircle, LogOut, Search, User } from "lucide-react";
+import { FaCalendarAlt, FaUserCog, FaUserAstronaut, FaUsers } from 'react-icons/fa'; // Thư viện icon
+import { Link } from 'react-router-dom';
+import { IoMdNotificationsOutline, IoMdArrowDropdown } from "react-icons/io";
+import { MdAdminPanelSettings, MdEmail } from "react-icons/md";
+import { IoCallSharp } from "react-icons/io5";
+
 const ManageCameras = () => {
     const routers = [
         {
@@ -43,23 +50,7 @@ const ManageCameras = () => {
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
                     <div className="grid grid-cols-3 gap-6">
                         <div className="col-span-2">
-                            <div className=" bg-white rounded-lg shadow-sm p-3">
-                                <div className="grid grid-cols-3 gap-2">
-                                    <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1">
-                                        <h2 className="text-lg font-bold">Tổng số Camera</h2>
-                                        <span className="text-lg font-bold">222</span>
-                                    </div>
-                                    <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1 text-green-700">
-                                        <h2 className="text-lg font-bold">Hoạt động</h2>
-                                        <span className="text-lg font-bold">2</span>
-                                    </div>
-                                    <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1 text-red-700">
-                                        <h2 className="text-lg font-bold">Không hoạt động</h2>
-                                        <span className="text-lg font-bold">4</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className=" bg-white rounded-lg shadow-md p-6 mt-10">
+                            <div className=" bg-white rounded-lg shadow-md p-6">
                                 <div className="flex justify-between mb-6">
                                     <div>
                                         <h2 className="text-xl font-bold mb-4">Danh sách các Camera</h2>
@@ -101,7 +92,20 @@ const ManageCameras = () => {
                                 </div>
                             </div>
                         </div>
-                        <AdminLeftSidebar />
+                        <div className="col-span-1">
+                            <div className="bg-white rounded-lg shadow-md p-3 mb-5 flex flex-col justify-center items-center">
+                                <p className='mb-5 text-lg font-bold'>Tổng số Camera</p>
+                                <img src='/AllCamera.svg' />
+                            </div >
+                            <div className="bg-white rounded-lg shadow-md p-3 mb-5 flex flex-col justify-center items-center">
+                                <p className='mb-5 text-lg font-bold'>Hoạt động</p>
+                                <img src='/onlineCam.svg' />
+                            </div >
+                            <div className="bg-white rounded-lg shadow-md p-3 mb-5 flex flex-col justify-center items-center">
+                                <p className='mb-5 text-lg font-bold'>Không hoạt động</p>
+                                <img src='/offlineCam.svg' />
+                            </div >
+                        </div>
                     </div>
                 </main>
             </div>

@@ -21,9 +21,6 @@ const AdminSidebar = ({ dispatch }) => {
   return (
     <div className="w-full min-h-screen">
       <div className="py-12 pb-6 flex flex-col gap-1 justify-center items-center w-full">
-        <span className="text-3xl text-emerald-700 tracking-tight font-bold">
-          Admin workspace
-        </span>
         <div className="mt-4 flex flex-col items-center justify-center gap-1">
           <img
             src= "/logo.svg"
