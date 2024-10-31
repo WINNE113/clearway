@@ -14,6 +14,8 @@ import RenewPassword from './pages/public/RenewPassword'
 import ManageRouters from './pages/admin/ManageRouters'
 import ManageUser from './pages/admin/ManageUser'
 import { getCurrent } from './redux/action'
+import ManageTrafficStatus from './pages/admin/ManageTrafficStatus'
+import ManageCameras from './pages/admin/ManageCameras'
 function App() {
   const { isLoading, isShowModal, modalContent } = useSelector(
     (state) => state.app
@@ -54,6 +56,8 @@ function App() {
           <Route path={path.DASHBOARD} element={<Dashboard />} />
           <Route path={path.MANAGE_ROUTES} element={<ManageRouters />} />
           <Route path={path.MANAGE_USER} element={<ManageUser />} />
+          <Route path={path.MANAGE_TRAFFIC_STATUS} element={<ManageTrafficStatus />} />
+          <Route path={path.MANAGE_CAMERA} element={<ManageCameras />} />
         </Route>
       </Routes>
       <ToastContainer

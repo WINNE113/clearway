@@ -5,7 +5,7 @@ import { IoMdAdd } from "react-icons/io";
 import { Button } from '@/components';
 import { FaRegEdit } from "react-icons/fa";
 
-const ManageRouters = () => {
+const ManageTrafficStatus = () => {
     const routers = [
         {
             id: 1,
@@ -13,9 +13,13 @@ const ManageRouters = () => {
             startAddress: "A",
             endAddress: "C",
             district: "300",
+            jamTime: "7h30 - 9:00",
+            level: "Cập nhật",
             vehicle: "Xe máy",
             estimateTime: "20",
-            trafficStatue: "Bình thường"
+            trafficStatue: "Bình thường",
+            airyTime: "50", 
+           
         },
         {
             id: 2,
@@ -25,7 +29,10 @@ const ManageRouters = () => {
             district: "300",
             vehicle: "Xe máy",
             estimateTime: "20",
-            trafficStatue: "Tắt đường"
+            trafficStatue: "Tắt đường",
+            jamTime: "7h30 - 9:00",
+            level: "Cao",
+            airyTime: "30", 
         },
         {
             id: 3,
@@ -35,7 +42,10 @@ const ManageRouters = () => {
             district: "300",
             vehicle: "Xe máy",
             estimateTime: "20",
-            trafficStatue: "Ngập nước"
+            trafficStatue: "Ngập nước",
+            jamTime: "7h30 - 9:00",
+            level: "Cao",
+            airyTime: "10", 
         },
         {
             id: 4,
@@ -45,7 +55,10 @@ const ManageRouters = () => {
             district: "300",
             vehicle: "Xe máy",
             estimateTime: "20",
-            trafficStatue: "Tai nạn giao thông"
+            trafficStatue: "Tai nạn giao thông",
+            jamTime: "4h30 - 10:00",
+            level: "Bình thường",
+            airyTime: "50", 
         }
     ]
     return (
@@ -55,30 +68,10 @@ const ManageRouters = () => {
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
                     <div className="grid grid-cols-3 gap-6">
                         <div className="col-span-2">
-                            <div className=" bg-white rounded-lg shadow-sm p-3">
-                                <div className="grid grid-cols-4 gap-2">
-                                    <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1">
-                                        <h2 className="text-lg font-bold">Tuyến đường</h2>
-                                        <span className="text-lg font-bold">9</span>
-                                    </div>
-                                    <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1 text-rose-700">
-                                        <h2 className="text-lg font-bold">Kẹt xe</h2>
-                                        <span className="text-lg font-bold">2</span>
-                                    </div>
-                                    <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1 text-orange-600">
-                                        <h2 className="text-lg font-bold">Nước gập</h2>
-                                        <span className="text-lg font-bold">3</span>
-                                    </div>
-                                    <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1 text-red-700">
-                                        <h2 className="text-lg font-bold">Tai nạn giao thông</h2>
-                                        <span className="text-lg font-bold">4</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className=" bg-white rounded-lg shadow-md p-6 mt-10">
+                            <div className=" bg-white rounded-lg shadow-md p-6">
                                 <div className="flex justify-between mb-6">
                                     <div>
-                                        <h2 className="text-xl font-bold mb-4">Thông tin các tuyến đường</h2>
+                                        <h2 className="text-xl font-bold mb-4">Thống kê tình trạng các tuyến đường</h2>
                                     </div>
                                     <div className="flex items-center h-10">
                                         <Button>
@@ -95,9 +88,10 @@ const ManageRouters = () => {
                                                 <th className="py-3 px-6 text-left">Địa điểm bắt đầu</th>
                                                 <th className="py-3 px-6 text-left">Địa điểm kết thúc</th>
                                                 <th className="py-3 px-6 text-left">Khoảng cách</th>
-                                                <th className="py-3 px-6 text-left">Phương tiện</th>
-                                                <th className="py-3 px-6 text-left">Thời gian ước tính hoàn thành</th>
+                                                <th className="py-3 px-6 text-left">Khung giờ tắc đường</th>
                                                 <th className="py-3 px-6 text-left">Tình trạng tuyến đường</th>
+                                                <th className="py-3 px-6 text-left">Mức độ</th>
+                                                <th className="py-3 px-6 text-left">Thông thoáng</th>
                                                 <th className="py-3 px-6 text-left">Cập nhật</th>
                                             </tr>
                                         </thead>
@@ -108,10 +102,11 @@ const ManageRouters = () => {
                                                     <td className="py-3 px-6 text-left">{router.streetName}</td>
                                                     <td className="py-3 px-6 text-left">{router.startAddress}</td>
                                                     <td className="py-3 px-6 text-left">{router.endAddress}</td>
-                                                    <td className="py-3 px-6 text-left">{router.district}Km</td>
-                                                    <td className="py-3 px-6 text-left">{router.vehicle}</td>
-                                                    <td className="py-3 px-6 text-left">{router.estimateTime}p</td>
-                                                    <td className={`py-3 px-6 text-left ${router.trafficStatue == "Tắt đường" ? "text-red-700" : ""}`}>{router.trafficStatue}</td>
+                                                    <td className="py-3 px-6 text-left">{router.district}km</td>
+                                                    <td className="py-3 px-6 text-left">{router.jamTime}</td>
+                                                    <td className="py-3 px-6 text-left">{router.trafficStatue}</td>
+                                                    <td className={`py-3 px-6 text-left ${router.level == "Cao" ? "text-red-700" : ""}`}>{router.level}</td>
+                                                    <td className="py-3 px-6 text-left">{router.airyTime}p</td>
                                                     <td className="py-3 px-6 text-left"><FaRegEdit size={20} /></td>
                                                 </tr>
                                             ))}
@@ -127,5 +122,4 @@ const ManageRouters = () => {
         </div>
     )
 }
-
-export default ManageRouters
+export default ManageTrafficStatus
