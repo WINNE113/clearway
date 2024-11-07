@@ -25,7 +25,6 @@ const ForgetPassword = ({ navigate, dispatch }) => {
             const response = await apiForgetPassword({ email })
             setIsLoading(false)
             if (response?.message === "OTP has been sent to your email successfully") {
-                console.log("Come heee")
                 dispatch(
                     modal({
                         isShowModal: true,

@@ -1,5 +1,5 @@
 import WithBaseTopping from "../../hocs/withBaseTopping"
-import { adminSidebar} from "../../ultils/constant"
+import { trafficAuthoritySidebar } from "../../ultils/constant"
 import clsx from "clsx"
 import React, { Fragment, useState } from "react"
 import {
@@ -8,13 +8,14 @@ import {
 } from "react-icons/ai"
 import { NavLink } from "react-router-dom"
 
-const AdminSidebar = ({ dispatch }) => {
+const TrafficAuthoritySidebar = ({ dispatch }) => {
   const [tabs, setTabs] = useState([])
   const handleTabs = (tabId) => {
     if (tabs.some((el) => el === tabId))
       setTabs((prev) => prev.filter((el) => el !== tabId))
     else setTabs((prev) => [...prev, tabId])
   }
+
   return (
     <div className="w-full min-h-screen">
       <div className="py-12 pb-6 flex flex-col gap-1 justify-center items-center w-full">
@@ -28,7 +29,7 @@ const AdminSidebar = ({ dispatch }) => {
         </div>
       </div>
       <div>
-        {adminSidebar.map((el) => (
+        {trafficAuthoritySidebar.map((el) => (
           <Fragment key={el.id}>
             {el.type === "SINGLE" && (
               <NavLink
@@ -87,4 +88,4 @@ const AdminSidebar = ({ dispatch }) => {
   )
 }
 
-export default WithBaseTopping(AdminSidebar)
+export default WithBaseTopping(TrafficAuthoritySidebar)

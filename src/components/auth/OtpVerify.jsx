@@ -9,7 +9,6 @@ import { modal } from "@/redux/appSlice"
 import { toast } from "react-toastify"
 import Swal from "sweetalert2"
 const OtpVerify = ({rePassword, email, password, dispatch, setVariant }) => {
-  console.log("Come otp verify")
   const [otp, setOtp] = useState("")
   const handleSendOTP = async () => {
     const response = await apiRegister({

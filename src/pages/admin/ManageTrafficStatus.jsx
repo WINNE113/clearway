@@ -1,6 +1,6 @@
 import React from 'react'
 import AdminHeader from '@/components/header/AdminHeader'
-import AdminLeftSidebar from '@/components/sidebar/AdminLeftSidebar'
+import RightSidebar from '@/components/sidebar/RightSidebar'
 import { IoMdAdd } from "react-icons/io";
 import { Button } from '@/components';
 import { FaRegEdit } from "react-icons/fa";
@@ -115,7 +115,7 @@ const ManageTrafficStatus = () => {
                                 </div>
                             </div>
                         </div>
-                        <AdminLeftSidebar />
+                        <RightSidebar />
                     </div>
                 </main>
             </div>

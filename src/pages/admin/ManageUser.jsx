@@ -23,7 +23,7 @@ import { Button } from "../../components";
 import "react-calendar/dist/Calendar.css";
 import { Link } from "react-router-dom";
 import AdminHeader from "@/components/header/AdminHeader";
-import AdminLeftSidebar from "@/components/sidebar/AdminLeftSidebar";
+import RightSidebar from "@/components/sidebar/RightSidebar";
 import { IoMdAdd } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -166,7 +166,7 @@ const ManageUser = () => {
                             </div>
                         </div>
                         {/* Notifications Panel */}
-                        <AdminLeftSidebar />
+                        <RightSidebar />
                     </div>
                 </main>
             </div>

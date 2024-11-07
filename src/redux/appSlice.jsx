@@ -7,9 +7,7 @@ export const appSlice = createSlice({
     isLoading: false,
     isShowModal: false,
     modalContent: null,
-    provinces: [],
     isResetFilter: false,
-    topProvinces: [],
   },
   reducers: {
     toggleLoading: (state, action) => {

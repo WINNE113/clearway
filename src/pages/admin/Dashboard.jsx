@@ -32,7 +32,7 @@ import { IoMdDownload } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { IoCallSharp } from "react-icons/io5";
 import AdminHeader from "@/components/header/AdminHeader";
-import AdminLeftSidebar from "@/components/sidebar/AdminLeftSidebar";
+import RightSidebar from "@/components/sidebar/RightSidebar";
 import { CiSun } from "react-icons/ci";
 import { BiSolidTrafficBarrier } from "react-icons/bi";
 
@@ -242,7 +242,7 @@ const Dashboard = () => {
               </div>
             </div>
             {/* Notifications Panel */}
-            <AdminLeftSidebar />
+            <RightSidebar />
           </div>
         </main>
       </div>

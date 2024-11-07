@@ -3,21 +3,20 @@ import React, { Fragment, useCallback, useEffect, useState } from "react"
 // import component
 import { Button, InputForm } from "../../components";
 import Checkbox from "antd/es/checkbox/Checkbox";
-
 import { useForm } from "react-hook-form"
 import Swal from "sweetalert2"
 import { useSelector } from "react-redux"
 import withBaseTopping from "@/hocs/WithBaseTopping"
-import { json, Link, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { modal } from "@/redux/appSlice"
-import { apiLogin, apiRegister, apiLoginGoogle, apiVerifyEmail, apiGetCurrentProfile } from "@/apis/user";
+import { apiLogin, apiLoginGoogle, apiVerifyEmail } from "@/apis/user";
 import { OtpVerify } from "../../components";
 import { auth, provider } from "@/components/googleSignin/config";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import path from "@/ultils/path";
 import { login } from "@/redux/userSlice";
-import { getCurrent } from "@/redux/action";
+import { store } from "@/redux";
 
 const Login = ({ navigate, dispatch, location }) => {
 
@@ -50,16 +49,17 @@ const Login = ({ navigate, dispatch, location }) => {
         setIsLoading(false)
         if (response?.is_ban === false) {       
           await dispatch(login({token: response.access_token}));  
-          Swal.fire('Success', 'Đăng nhập thành côngg!', 'success');
+          console.log("Store" + JSON.stringify(store.getState()));
           localStorage.setItem("_id", response._id);
+          console.log(localStorage.getItem("_id"));
           if(response.role == 0){
-            return navigate("/admin/dashboard");
-          }
-          if(response.role == 2){
-            return navigate("/admin/manage-traffic-status");
+            return navigate("/" + path.ADMIN + "/" + path.DASHBOARD);
           }
           if(response.role == 3){
-            return navigate("/admin/manage-router");
+            return navigate("/" + path.TRAFFIC_AUTHORITY + "/" + path.TA_MANAGE_TRAFFIC_STATUS);
+          }
+          if(response.role == 2){
+            return navigate("/" + path.COPERATE + "/" + path.CO_MANAGE_TRAFFIC_STATUS);
           }
           return navigate("/");
         } else {
@@ -77,7 +77,6 @@ const Login = ({ navigate, dispatch, location }) => {
         });
         setIsLoading(false)
         if (verifyEmailResponse?.message === "Email has been sent OTP successfully") {
-          console.log("come here")
           dispatch(
             modal({
               isShowModal: true,
@@ -120,7 +119,6 @@ const Login = ({ navigate, dispatch, location }) => {
         Swal.fire('Oops...', 'Tài khoản của bạn bị khóa. Vui lòng liên hệ với hỗ trợ.', 'error');
       }
 
-      console.log("Account google: " + data.user.email);
     } catch (error) {
       // Handle errors
       Swal.fire('Oops...', 'Đăng nhập thất bại. Vui lòng thử lại.', 'error');

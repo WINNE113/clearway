@@ -6,7 +6,7 @@ import { IoMdNotificationsOutline, IoMdArrowDropdown } from "react-icons/io";
 import { MdAdminPanelSettings, MdEmail } from "react-icons/md";
 import { IoCallSharp } from "react-icons/io5";
 
-const AdminLeftSidebar = () => {
+const RightSidebar = () => {
   return (
       <div className="bg-gray-100 rounded-lg shadow-md p-6 col-span-1">
       <div className="bg-gray-100 rounded-lg shadow-md p-6 mb-5">
@@ -56,4 +56,4 @@ const AdminLeftSidebar = () => {
   )
 }
 
-export default AdminLeftSidebar
+export default RightSidebar

@@ -5,10 +5,9 @@ import { IoMdAdd } from "react-icons/io";
 import { Button } from '@/components';
 import { FaRegEdit } from "react-icons/fa";
 import { modal } from '@/redux/appSlice';
-import CreateRouter from './CreateRouter';
 import WithBaseTopping from '@/hocs/withBaseTopping';
 
-const ManageRouters = ({dispatch}) => {
+const TAManageRouter = ({dispatch}) => {
     const routers = [
         {
             id: 1,
@@ -138,4 +137,4 @@ const ManageRouters = ({dispatch}) => {
     )
 }
 
-export default WithBaseTopping(ManageRouters)
+export default WithBaseTopping(TAManageRouter)

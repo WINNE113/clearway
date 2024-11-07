@@ -16,6 +16,12 @@ import ManageUser from './pages/admin/ManageUser'
 import { getCurrent } from './redux/action'
 import ManageTrafficStatus from './pages/admin/ManageTrafficStatus'
 import ManageCameras from './pages/admin/ManageCameras'
+import LayoutTrafficAuthority from './pages/trafficAuthority/LayoutTrafficAuthority'
+import TAManageRouter from './pages/trafficAuthority/TAManageRouter'
+import LayoutCorerate from './pages/coperate/LayoutCorerate'
+import COManageTrafficStatus from './pages/coperate/COManageTrafficStatus'
+import TAManageTrafficStatus from './pages/trafficAuthority/TAManageTrafficStatus'
+
 function App() {
   const { isLoading, isShowModal, modalContent } = useSelector(
     (state) => state.app
@@ -24,14 +30,17 @@ function App() {
   const { token } = useSelector((state) => state.user)
 
 
-  // Xử lý logic lấy dữ liệu dựa vào token (nếu có token thì lấy thêm wishlist và requestForQuotation)
-  useEffect(() => {
-    const fetchData = async () => {
-      dispatch(getCurrent());
-    };
-    const timeoutId = setTimeout(fetchData, 800);
+  console.log("Token: " + token);
 
-    return () => clearTimeout(timeoutId);
+  // Xử lý logic lấy dữ liệu dựa vào token
+  useEffect(() => {
+    if (token) {
+      const fetchData = async () => {
+        dispatch(getCurrent());
+      };
+      const timeoutId = setTimeout(fetchData, 800);
+      return () => clearTimeout(timeoutId);
+    }
   }, [token, dispatch]);
 
   return (
@@ -51,15 +60,27 @@ function App() {
         <Route path={path.LOGIN} element={<Login />} />
         <Route path={path.FORGET_PASSWORD} element={<ForgetPassword />} />
         <Route path={path.RENEW_PASSWORD} element={<RenewPassword />} />
-
+        /** Admin */
         <Route path={path.ADMIN} element={<LayoutAdmin />}>
           <Route path={path.DASHBOARD} element={<Dashboard />} />
-          <Route path={path.MANAGE_ROUTES} element={<ManageRouters />} />
-          <Route path={path.MANAGE_USER} element={<ManageUser />} />
-          <Route path={path.MANAGE_TRAFFIC_STATUS} element={<ManageTrafficStatus />} />
-          <Route path={path.MANAGE_CAMERA} element={<ManageCameras />} />
+          <Route path={path.AD_MANAGE_ROUTES} element={<ManageRouters />} />
+          <Route path={path.AD_MANAGE_USER} element={<ManageUser />} />
+          <Route path={path.AD_MANAGE_TRAFFIC_STATUS} element={<ManageTrafficStatus />} />
+          <Route path={path.AD_MANAGE_CAMERA} element={<ManageCameras />} />
         </Route>
-      </Routes>
+
+        /** TRAFFIC AUTHORITY */
+        <Route path={path.TRAFFIC_AUTHORITY} element={<LayoutTrafficAuthority />}>
+          <Route path={path.TA_MANAGE_ROUTE} element={<TAManageRouter />} />
+          <Route path={path.TA_MANAGE_TRAFFIC_STATUS} element={<TAManageTrafficStatus />} />
+        </Route>
+
+        /** COPERATE */
+        <Route path={path.COPERATE} element={<LayoutCorerate />}>
+          <Route path={path.CO_MANAGE_TRAFFIC_STATUS} element={<COManageTrafficStatus />} />
+        </Route>
+
+      </Routes >
       <ToastContainer
         position="top-right"
         autoClose={2000}
