@@ -4,6 +4,8 @@ import AdminLeftSidebar from '@/components/sidebar/AdminLeftSidebar'
 import { IoMdAdd } from "react-icons/io";
 import { Button } from '@/components';
 import { FaRegEdit } from "react-icons/fa";
+import { modal } from '@/redux/appSlice';
+import CreateRouter from './CreateRouter';
 
 const ManageRouters = () => {
     const routers = [
@@ -81,7 +83,14 @@ const ManageRouters = () => {
                                         <h2 className="text-xl font-bold mb-4">Thông tin các tuyến đường</h2>
                                     </div>
                                     <div className="flex items-center h-10">
-                                        <Button>
+                                        <Button onClick={() =>
+                                            dispatch(
+                                                modal({
+                                                    isShowModal: true,
+                                                    modalContent: <UpdateService serviceId={el.id} />,
+                                                })
+                                            )
+                                        }>
                                             <IoMdAdd size={20} className="text-white" />Add New
                                         </Button>
                                     </div>

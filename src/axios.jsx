@@ -6,7 +6,6 @@ instance.interceptors.request.use(
   function (config) {
     const data = localStorage.getItem("persist:clearway")
     const tokenObj = data && JSON.parse(data)
-    console.log("Token in localstore: " + data)
     if (tokenObj?.token?.length > 6)
       config.headers = {
         authorization: `Bearer ${JSON.parse(tokenObj.token)}`,
