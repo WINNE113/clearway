@@ -29,6 +29,7 @@ import {
 } from "react-icons/ai"
 import { GiTrafficLightsRed, GiCctvCamera  } from "react-icons/gi";
 import { BiSolidReport } from "react-icons/bi";
+import { IoIosNotifications } from "react-icons/io";
 
 export const menu = [
     {
@@ -106,6 +107,13 @@ export const adminSidebar = [
         type: "SINGLE",
     },  
     {
+        id: 6842,
+        name: "Quản lý thông báo",
+        path: `/${path.ADMIN}/${path.MANAGE_NOTIFICATION}`,
+        icon: <IoIosNotifications size={20} />,
+        type: "SINGLE",
+    },
+    {
         id: 5734378,
         name: "Quản lý camera",
         path: `/${path.ADMIN}/${path.MANAGE_CAMERA}`,
@@ -119,4 +127,45 @@ export const adminSidebar = [
         icon: <RiPriceTag2Line size={20} />,
         type: "SINGLE",
     },
+]
+
+export const trafficAuthoritySidebar = [
+    {
+        id: 5733438,
+        name: "Quản lý tình trạng giao thông",
+        path: `/${path.ADMIN}/${path.MANAGE_TRAFFIC_STATUS}`,
+        icon: <MdReportGmailerrorred size={20} />,
+        type: "SINGLE",
+    },
+    {
+        id: 355665,
+        name: "Quản lý tuyến đường",
+        icon: <BsPostcard size={20} />,
+        type: "SINGLE",
+        path: `/${path.ADMIN}/${path.MANAGE_ROUTES}`,
+    },
+    {
+        id: 5733678,
+        name: "Quản lý biển báo giao thông",
+        path: `/${path.ADMIN}/${path.MANAGER_TRAFFIC_SIGN}`,
+        icon: <GiTrafficLightsRed size={20} />,
+        type: "SINGLE",
+    },
+    {
+        id: 573367842,
+        name: "Quản lý báo cáo",
+        path: `/${path.ADMIN}/${path.MANAGER_TRAFFIC_SIGN}`,
+        icon: <BiSolidReport size={20} />,
+        type: "SINGLE",
+    }
+]
+
+export const coperateSidebar = [
+    {
+        id: 5733438,
+        name: "Quản lý tình trạng giao thông",
+        path: `/${path.ADMIN}/${path.MANAGE_TRAFFIC_STATUS}`,
+        icon: <MdReportGmailerrorred size={20} />,
+        type: "SINGLE",
+    }
 ]

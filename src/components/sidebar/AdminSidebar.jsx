@@ -1,5 +1,5 @@
 import WithBaseTopping from "../../hocs/withBaseTopping"
-import { adminSidebar } from "../../ultils/constant"
+import { adminSidebar, coperateSidebar, trafficAuthoritySidebar } from "../../ultils/constant"
 import { formatMoney } from "../../ultils/fn"
 import clsx from "clsx"
 import React, { Fragment, useState } from "react"
@@ -12,12 +12,23 @@ import { useSelector } from "react-redux"
 import { NavLink } from "react-router-dom"
 
 const AdminSidebar = ({ dispatch }) => {
+  const { current } = useSelector((state) => state.user)
   const [tabs, setTabs] = useState([])
   const handleTabs = (tabId) => {
     if (tabs.some((el) => el === tabId))
       setTabs((prev) => prev.filter((el) => el !== tabId))
     else setTabs((prev) => [...prev, tabId])
   }
+
+  const getSidebarItems = () => {
+    if(current?.role === 0 ) return adminSidebar;
+    if(current?.role === 2 ) return coperateSidebar;
+    if(current?.role === 3 ) return trafficAuthoritySidebar;
+    return [];
+  }
+
+  const sidebarItems = getSidebarItems();
+
   return (
     <div className="w-full min-h-screen">
       <div className="py-12 pb-6 flex flex-col gap-1 justify-center items-center w-full">
@@ -31,7 +42,7 @@ const AdminSidebar = ({ dispatch }) => {
         </div>
       </div>
       <div>
-        {adminSidebar.map((el) => (
+        {sidebarItems.map((el) => (
           <Fragment key={el.id}>
             {el.type === "SINGLE" && (
               <NavLink

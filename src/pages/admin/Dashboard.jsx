@@ -33,6 +33,10 @@ import { Link } from "react-router-dom";
 import { IoCallSharp } from "react-icons/io5";
 import AdminHeader from "@/components/header/AdminHeader";
 import AdminLeftSidebar from "@/components/sidebar/AdminLeftSidebar";
+import { CiSun } from "react-icons/ci";
+import { BiSolidTrafficBarrier } from "react-icons/bi";
+
+
 const Dashboard = () => {
 
   // Sample data
@@ -94,7 +98,7 @@ const Dashboard = () => {
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
           <div className="grid grid-cols-3 gap-6">
             <div className="col-span-2">
-              {/*Thông tin hệ thống*/}
+              {/*Thông tin người dùng*/}
               <div className=" bg-white rounded-lg shadow-sm p-3">
                 <div className="grid grid-cols-5 gap-2">
                   <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1">
@@ -150,53 +154,90 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Thông tin người dùng*/}
-              <div className=" bg-white rounded-lg shadow-md p-6 mt-10">
-                <div className="flex justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold mb-4">Thông tin người dùng</h2>
+              {/* Thông tin hệ thống*/}
+              <div className=" bg-white rounded-lg shadow-sm p-3">
+                <div className="grid grid-cols-5 gap-2">
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1">
+                    <h2 className="text-xs font-bold">Thông tin hệ thống</h2>
+                    <div className="flex items-center mt-3 mb-3">
+                      <Input
+                        type="text"
+                        value={date.toLocaleDateString()}
+                        readOnly
+                        className="border rounded-lg p-2 w-28"
+                      />
+                      <FaCalendarAlt size={15} className="ml-3 cursor-pointer" onClick={handleToggleCalendar} />
+                    </div>
+                    {showCalendar && (
+                      <div className="absolute mt-2 z-10">
+                        <Calendar onChange={setDate} value={date} />
+                      </div>
+                    )}
+                    <span className="text-xs font-bold">Tổng: 9 tuyến đường</span>
                   </div>
-                  <div className="flex items-center">
-                    <h2 className="text-xl font-bold mr-9 text-blue-600">Gửi thông báo</h2>
-                    <Button>
-                      <IoMdDownload size={15} className="text-white" />Tải danh sách
-                    </Button>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-4 flex justify-center items-center flex-col">
+                    <h2 className="text-lg font-bold flex items-center justify-center">
+                      <CiSun className="mr-2" /> Tổng số
+                    </h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3 text-center">300 Tuyến đường</h2>
                   </div>
                 </div>
-                <div className="mb-4 mt-5">
-                  {userDataTabs.map((tab) => (
-                    <button
-                      key={tab.value}
-                      className={`mr-2 px-2 py-3 text-sm rounded ${activeTab === tab.value ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-                      onClick={() => handleTabChange(tab.value)}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full bg-white">
-                    <thead>
-                      <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                        <th className="py-3 px-6 text-left">Họ và Tên</th>
-                        <th className="py-3 px-6 text-left">Email</th>
-                        <th className="py-3 px-6 text-left">Role</th>
-                        <th className="py-3 px-6 text-left">Tình trạng</th>
-                        <th className="py-3 px-6 text-left">Hành động</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-gray-950 text-sm font-light">
-                      {userDataTabs.find(tab => tab.value === activeTab).data.map((user) => (
-                        <tr key={user.id} className="border-b border-gray-200 hover:bg-gray-100">
-                          <td className="py-3 px-6 text-left whitespace-nowrap">{user.fullName}</td>
-                          <td className="py-3 px-6 text-left">{user.email}</td>
-                          <td className="py-3 px-6 text-left">{user.role}</td>
-                          <td className="py-3 px-6 text-left">{user.status}</td>
-                          <td className="py-3 px-6 text-left">{user.activity}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              </div>
+
+              {/* Thông tin trafficS*/}
+              <div className=" bg-white rounded-lg shadow-sm p-3">
+                <div className="grid grid-cols-5 gap-2">
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md col-span-1">
+                    <h2 className="text-xs font-bold">Thông tin hệ thống</h2>
+                    <div className="flex items-center mt-3 mb-3">
+                      <Input
+                        type="text"
+                        value={date.toLocaleDateString()}
+                        readOnly
+                        className="border rounded-lg p-2 w-28"
+                      />
+                      <FaCalendarAlt size={15} className="ml-3 cursor-pointer" onClick={handleToggleCalendar} />
+                    </div>
+                    {showCalendar && (
+                      <div className="absolute mt-2 z-10">
+                        <Calendar onChange={setDate} value={date} />
+                      </div>
+                    )}
+                    <span className="text-xs font-bold">Tổng: 9 biển báo</span>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md grid-cols-1">
+                    <h2 className="text-xs font-bold flex items-center justify-center">
+                      <BiSolidTrafficBarrier className="mr-2" /> Biển cấm
+                    </h2>
+                    <h2 className="text-sm text-green-400 mt-3">1200 Hoạt động</h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3">1200 Không Hoạt động</h2>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md grid-cols-1">
+                    <h2 className="text-xs font-bold flex items-center justify-center">
+                      <BiSolidTrafficBarrier className="mr-2" />Biển nguy hiểm
+                    </h2>
+                    <h2 className="text-sm text-green-400 mt-3">1200 Hoạt động</h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3">1200 Không Hoạt động</h2>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md grid-cols-1">
+                    <h2 className="text-xs font-bold flex items-center justify-center">
+                      <BiSolidTrafficBarrier className="mr-2" />Biển chỉ dẫn
+                    </h2>
+                    <h2 className="text-sm text-green-400 mt-3">1200 Hoạt động</h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3">1200 Không Hoạt động</h2>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow-md grid-cols-1">
+                    <h2 className="text-xs font-bold flex items-center justify-center">
+                      <BiSolidTrafficBarrier className="mr-2" />Biển hiệu lệnh
+                    </h2>
+                    <h2 className="text-sm text-green-400 mt-3">1200 Hoạt động</h2>
+                    <div className="w-full border-t border-gray-300 my-3" />
+                    <h2 className="text-sm text-orange-500 mt-3">1200 Không Hoạt động</h2>
+                  </div>
                 </div>
               </div>
             </div>

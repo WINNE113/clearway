@@ -52,7 +52,7 @@ const Login = ({ navigate, dispatch, location }) => {
           await dispatch(login({token: response.access_token}));  
           Swal.fire('Success', 'Đăng nhập thành côngg!', 'success');
           localStorage.setItem("_id", response._id);
-          if(response.role == 0){
+          if(response.role == 0 || response.role == 2 || response.role == 3){
             return navigate("/admin/dashboard");
           }
           return navigate("/");
