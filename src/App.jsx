@@ -29,9 +29,6 @@ function App() {
   const dispatch = useDispatch()
   const { token } = useSelector((state) => state.user)
 
-
-  console.log("Token: " + token);
-
   // Xử lý logic lấy dữ liệu dựa vào token
   useEffect(() => {
     if (token) {

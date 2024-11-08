@@ -9,15 +9,14 @@ import { useSelector } from "react-redux"
 import withBaseTopping from "@/hocs/WithBaseTopping"
 import { useSearchParams } from "react-router-dom"
 import { modal } from "@/redux/appSlice"
-import { apiLogin, apiLoginGoogle, apiVerifyEmail } from "@/apis/user";
+import { apiLoginGoogle, apiVerifyEmail } from "@/apis/user";
 import { OtpVerify } from "../../components";
 import { auth, provider } from "@/components/googleSignin/config";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import path from "@/ultils/path";
-import { login } from "@/redux/userSlice";
 import { store } from "@/redux";
-
+import { loginThunk } from "@/redux/action";
 const Login = ({ navigate, dispatch, location }) => {
 
   const [variant, setVariant] = useState(() => location.state || "LOGIN")
@@ -26,8 +25,6 @@ const Login = ({ navigate, dispatch, location }) => {
   const [searchParams] = useSearchParams()
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
-
-
 
   const {
     register,
@@ -44,26 +41,19 @@ const Login = ({ navigate, dispatch, location }) => {
     try {
       if (variant === "LOGIN") {
         const { email, password } = payload;
-        setIsLoading(true)
-        const response = await apiLogin({ email, password });
-        setIsLoading(false)
-        if (response?.is_ban === false) {       
-          await dispatch(login({token: response.access_token}));  
-          console.log("Store" + JSON.stringify(store.getState()));
-          localStorage.setItem("_id", response._id);
-          console.log(localStorage.getItem("_id"));
-          if(response.role == 0){
+        try {
+          const response = await dispatch(loginThunk({ email, password })).unwrap();
+          if (response.role == 0) {
             return navigate("/" + path.ADMIN + "/" + path.DASHBOARD);
           }
-          if(response.role == 3){
+          if (response.role == 3) {
             return navigate("/" + path.TRAFFIC_AUTHORITY + "/" + path.TA_MANAGE_TRAFFIC_STATUS);
           }
-          if(response.role == 2){
+          if (response.role == 2) {
             return navigate("/" + path.COPERATE + "/" + path.CO_MANAGE_TRAFFIC_STATUS);
           }
           return navigate("/");
-        } else {
-          // Handle login error
+        } catch (error) {
           Swal.fire('Oops...', 'Sai email hoặc mật khẩu. Vui lòng thử lại.', 'error');
         }
       } else if (variant === "REGISTER") {

@@ -29,6 +29,7 @@ const Navigation = ({ dispatch, location, navigate }) => {
     }
 
     const { current } = useSelector((state) => state.user)
+    console.log("Current in navigate: " + JSON.stringify(current))
 
     return (
         <div className="flex bg-emerald-800 py-6 justify-center">
